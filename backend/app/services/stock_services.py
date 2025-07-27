@@ -31,8 +31,15 @@ class FyersAPI():
     
     
     def epoch_values_for_fyers(self, timestamp):
-        naive_dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
         ist = pytz.timezone("Asia/Kolkata")
+
+        try:
+            naive_dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            # Fallback to date only if time is missing
+            naive_dt = datetime.strptime(timestamp, "%Y-%m-%d")
+            naive_dt = naive_dt.replace(hour=0, minute=0, second=0)
+
         aware_ist_dt = ist.localize(naive_dt)
         utc_dt = aware_ist_dt.astimezone(pytz.utc)
         epoch_time = int(utc_dt.timestamp())
@@ -41,6 +48,9 @@ class FyersAPI():
     
     def get_symbol_data(self, symbol, start_date, end_date, res):
         
+        start_date = self.epoch_values_for_fyers(start_date)
+        end_date = self.epoch_values_for_fyers(end_date)
+
         try:
             data = {"symbol": symbol,
                     "resolution":res,
@@ -48,6 +58,8 @@ class FyersAPI():
                     "range_from":start_date,
                     "range_to":end_date,
                     "cont_flag":"1"}
+            
+            logger.info(data)
             
             data_candles = (self.fyers.history(data)).get('candles')
             columns = ["epoch", "open", "high", "low", "close", "volume"]
@@ -70,8 +82,5 @@ class FyersAPI():
 
 if __name__ == "__main__":
     fyers_client = FyersAPI()
-    #df = fyers_client.get_symbol_data("NSE:NIFTY25MAY25000CE", "2025-05-20", "2025-05-22")
-    #print(df)
-
-    res = fyers_client.get_ltp("NSE:NIFTY25JUNFUT")
-    print(res)
+    df = fyers_client.get_symbol_data("BSE:SENSEX25JUL81200CE", "2025-06-11 14:00:00", "2025-07-30 14:00:00", "1")
+    print(df)
