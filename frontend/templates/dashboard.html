@@ -12,12 +12,13 @@
       <h1>Market Dashboard</h1>
     </header>
 
-    <div class="dashboard">
-      <!-- Live Crypto Feed -->
-      <section class="card" id="crypto-feed">
-        <h2>Live Crypto Feed</h2>
-        <ul id="crypto-list"></ul>
-      </section>
+    <section class="card" id="crypto-feed">
+      <h2>Live Crypto Feed</h2>
+      <input type="text" id="crypto-input" placeholder="Enter ticker (e.g. BTCUSDT)">
+      <button onclick="setCryptoTicker()">Set</button>
+      <ul id="crypto-list"></ul>
+    </section>
+
 
       <!-- Top 10 Bulk Deals -->
       <section class="card" id="bulk-deals">
