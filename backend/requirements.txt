@@ -10,3 +10,9 @@ Werkzeug
 pandas
 fyers-apiv3
 psycopg2
+selenium
+webdriver-manager
+requests
+pandas
+mysql-connector-python
+schedule
