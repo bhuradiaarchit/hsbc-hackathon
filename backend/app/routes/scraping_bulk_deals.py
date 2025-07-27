@@ -6,6 +6,7 @@ from app.services.crypto_services import get_current_price, make_init_data
 import logging
 import json
 from app import db
+from sqlalchemy import text
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -24,7 +25,7 @@ def top_5_bulk_deals():
             ORDER BY total_buy_volume DESC
             LIMIT 10;
         """
-        result = db.session.execute(query).fetchall()
+        result = db.session.execute(text(query)).fetchall()
 
         top_deals = [
             {"symbol": row[0], "total_buy_volume": int(row[1])}
