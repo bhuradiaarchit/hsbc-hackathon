@@ -33,13 +33,22 @@
       </table>
     </section>
 
-      <!-- Stock Search -->
-      <section class="card" id="stock-search">
-        <h2>Search Stock</h2>
-        <input type="text" id="stock-input" placeholder="Enter stock symbol (e.g., AAPL)">
-        <button onclick="fetchStock()">Get Data</button>
-        <canvas id="stockChart" width="400" height="200"></canvas>
-      </section>
+    <!-- Stock Search -->
+    <section class="card" id="stock-search"> 
+      <h2>Search Stock</h2>
+      <input type="text" id="stock-input" placeholder="Enter stock symbol (e.g., BSE:SENSEX25JUL81200CE)">
+      <input type="date" id="start-date" value="2025-07-01">
+      <input type="date" id="end-date" value="2025-07-27">
+      <select id="timeframe">
+        <option value="1">1 min</option>
+        <option value="60">1 hour</option>
+        <option value="1440">1 day</option>
+      </select>
+      <button onclick="fetchStock()">Get Data</button>
+      <button onclick="downloadCSV()" id="download-btn" style="display:none; margin-left:10px;">Download CSV</button>
+      <canvas id="stockChart" width="400" height="200"></canvas>
+    </section>
+
     </div>
   </div>
 

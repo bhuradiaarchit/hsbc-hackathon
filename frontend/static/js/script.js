@@ -66,5 +66,110 @@ function updateBulkDealsTable() {
 
 // Call on page load and every 60 seconds to refresh
 updateBulkDealsTable();
-setInterval(updateBulkDealsTable, 60000);
+setInterval(updateBulkDealsTable, 6000000000);
 
+
+let stockChart;
+let stockDataForCSV = [];
+
+function fetchStock() {
+  const symbol = document.getElementById("stock-input").value.trim();
+  const startDate = document.getElementById("start-date").value;
+  const endDate = document.getElementById("end-date").value;
+  const timeframe = document.getElementById("timeframe").value;
+
+  if (!symbol) {
+    alert("Please enter a stock symbol.");
+    return;
+  }
+  if (!startDate || !endDate) {
+    alert("Please select start and end dates.");
+    return;
+  }
+
+  const url = `/stocks/historical?stock_name=${encodeURIComponent(symbol)}&start_date=${startDate}&end_date=${endDate}&timeframe=${timeframe}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const historical = data.historical_data;
+      if (!historical || historical.length === 0) {
+        alert("No data found.");
+        return;
+      }
+
+      stockDataForCSV = historical;  // Save for CSV download
+
+      // Convert timestamps (milliseconds) to readable dates
+      const labels = historical.map(d => new Date(d.date).toLocaleString());
+      const closes = historical.map(d => d.close);
+
+      const ctx = document.getElementById("stockChart").getContext("2d");
+      if (stockChart) stockChart.destroy();
+
+      stockChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: `${symbol} Close Price`,
+            data: closes,
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            fill: true,
+            tension: 0.2,
+          }],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              display: true,
+              title: { display: true, text: "Date Time" },
+              ticks: { maxRotation: 45, minRotation: 45 }
+            },
+            y: {
+              display: true,
+              title: { display: true, text: "Close Price" }
+            }
+          }
+        }
+      });
+
+      // Show download button
+      document.getElementById("download-btn").style.display = "inline-block";
+    })
+    .catch(err => {
+      alert("Failed to fetch stock data");
+      console.error(err);
+    });
+}
+
+// Download CSV function
+function downloadCSV() {
+  if (!stockDataForCSV.length) return;
+
+  const header = ["Date", "Open", "High", "Low", "Close", "Volume"];
+  const rows = stockDataForCSV.map(d => [
+    new Date(d.date).toISOString(),
+    d.open,
+    d.high,
+    d.low,
+    d.close,
+    d.volume
+  ]);
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += header.join(",") + "\r\n";
+  rows.forEach(rowArray => {
+    csvContent += rowArray.join(",") + "\r\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "stock_data.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
