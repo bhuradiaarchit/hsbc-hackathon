@@ -24,10 +24,12 @@ def create_app():
     from .main.routes import main_bp
     from .routes.stocks import stocks_bp
     from .routes.crypto import crypto_bp
+    from .routes.scraping_bulk_deals import bulk_deals_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(stocks_bp, url_prefix="/stocks")
     app.register_blueprint(crypto_bp, url_prefix="/crypto")
+    app.register_blueprint(bulk_deals_bp, url_prefix="/bulk_deals")
 
     return app
