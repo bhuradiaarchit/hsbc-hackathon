@@ -1,0 +1,55 @@
+body {
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    min-height: 100vh;
+}
+
+.frosted-card {
+    backdrop-filter: blur(10px) saturate(138%);
+    background: rgba(255, 255, 255, 0.80);
+    border-radius: 1.5rem;
+}
+
+.frost-nav {
+    background: rgba(18, 40, 120, 0.95) !important;
+    backdrop-filter: blur(6px);
+}
+
+.card {
+    border-radius: 1.5rem;
+}
+h2 {
+    letter-spacing: 1px;
+}
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem #a5b4fc33;
+    border-color: #6366f1;
+}
+ .hover-underline:hover {
+        text-decoration: underline;
+    }
+
+    .navbar {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+    }
+
+    .btn-outline-light:hover {
+        color: #000;
+        background-color: #fff;
+        border-color: #fff;
+    }
+.btn {
+    font-weight: 500;
+}
+.animate-fade-down {
+    animation: fade-down 0.85s cubic-bezier(.39,.575,.565,1) both;
+}
+@keyframes fade-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
