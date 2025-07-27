@@ -1,0 +1,10 @@
+
+
+Flask
+Flask-JWT-Extended
+PyMySQL
+Flask-SQLAlchemy
+Flask-Migrate
+python-dotenv
+Werkzeug
+pandas
