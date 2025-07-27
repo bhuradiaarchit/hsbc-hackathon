@@ -23,9 +23,11 @@ def create_app():
     from .auth.routes import auth_bp
     from .main.routes import main_bp
     from .routes.stocks import stocks_bp
+    from .routes.crypto import crypto_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(stocks_bp, url_prefix="/stocks")
+    app.register_blueprint(crypto_bp, url_prefix="/crypto")
 
     return app
