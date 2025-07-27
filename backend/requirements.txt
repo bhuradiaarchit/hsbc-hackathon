@@ -9,3 +9,4 @@ python-dotenv
 Werkzeug
 pandas
 fyers-apiv3
+psycopg2
