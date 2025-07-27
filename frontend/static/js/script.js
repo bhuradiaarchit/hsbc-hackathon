@@ -65,6 +65,7 @@ function updateBulkDealsTable() {
 
 updateBulkDealsTable();
 
+
 let stockChart;
 let stockDataForCSV = [];
 
