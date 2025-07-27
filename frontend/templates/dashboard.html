@@ -2,54 +2,120 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Market Dashboard</title>
+  <title>HSBC One</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+<div class="floating-particles">
+    <div class="particle" style="left: 10%; top: 20%; width: 4px; height: 4px; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; top: 60%; width: 6px; height: 6px; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 30%; top: 10%; width: 3px; height: 3px; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 70%; top: 40%; width: 5px; height: 5px; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 80%; top: 70%; width: 4px; height: 4px; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 90%; top: 30%; width: 6px; height: 6px; animation-delay: 5s;"></div>
+  </div>
+
   <div class="container">
     <header>
-      <h1>Market Dashboard</h1>
+      <div class="header-content">
+        <h1><i class="fas fa-chart-line"></i> Market Dashboard</h1>
+        <p class="subtitle">Real-time financial data and analytics platform</p>
+      </div>
     </header>
 
-    <section class="card" id="crypto-feed">
-      <h2>Live Crypto Feed</h2>
-      <input type="text" id="crypto-input" placeholder="Enter ticker (e.g. BTCUSDT)">
-      <button onclick="setCryptoTicker()">Set</button>
-      <ul id="crypto-list"></ul>
-    </section>
+    <div class="dashboard">
+      <section class="card" id="crypto-feed">
+        <h2><i class="fab fa-bitcoin"></i> Live Crypto Feed</h2>
+        <div class="status-indicator status-live"></div>
+        <span style="color: var(--success-color); font-size: 0.9rem; font-weight: 600;">LIVE</span>
+        
+        <div class="input-group">
+          <div class="input-container">
+            <input type="text" id="crypto-input" placeholder="Enter ticker (e.g. BTCUSDT)">
+          </div>
+          <button class="btn" onclick="setCryptoTicker()">
+            <i class="fas fa-search"></i> Set Ticker
+          </button>
+        </div>
+        <ul id="crypto-list">
+          <div class="loading">
+            <i class="fas fa-spinner"></i>
+            Loading crypto data...
+          </div>
+        </ul>
+      </section>
 
-    <section class="card" id="bulk-deals">
-      <h2>Top 10 Bulk Deals via Scraping</h2>
-      <table id="bulk-table" style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th style="border-bottom: 1px solid #ddd; text-align: left; padding: 8px;">Symbol</th>
-            <th style="border-bottom: 1px solid #ddd; text-align: right; padding: 8px;">Total Buy Volume</th>
-          </tr>
-        </thead>
-        <tbody id="bulk-table-body">
-        </tbody>
-      </table>
-    </section>
+      <section class="card" id="bulk-deals">
+        <h2><i class="fas fa-handshake"></i> Top 10 Bulk Deals</h2>
+        <div class="status-indicator status-live"></div>
+        <span style="color: var(--success-color); font-size: 0.9rem; font-weight: 600;">LIVE SCRAPING</span>
+        
+        <table id="bulk-table">
+          <thead>
+            <tr>
+              <th><i class="fas fa-chart-bar"></i> Symbol</th>
+              <th style="text-align: right;"><i class="fas fa-volume-up"></i> Total Buy Volume</th>
+            </tr>
+          </thead>
+          <tbody id="bulk-table-body">
+            <tr><td colspan="2" class="loading"><i class="fas fa-spinner"></i> Loading bulk deals...</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
 
-    <!-- Stock Search -->
-    <section class="card" id="stock-search"> 
-      <h2>Search Stock</h2>
-      <input type="text" id="stock-input" placeholder="Enter stock symbol (e.g., BSE:SENSEX25JUL81200CE)">
-      <input type="date" id="start-date" value="2025-07-01">
-      <input type="date" id="end-date" value="2025-07-27">
-      <select id="timeframe">
-        <option value="1">1 min</option>
-        <option value="60">1 hour</option>
-        <option value="1440">1 day</option>
-      </select>
-      <button onclick="fetchStock()">Get Data</button>
-      <button onclick="downloadCSV()" id="download-btn" style="display:none; margin-left:10px;">Download CSV</button>
+    <section class="card stock-section" id="stock-search"> 
+      <h2><i class="fas fa-search-dollar"></i> Stock Analysis & Charts</h2>
+      
+      <div class="input-group">
+        <div class="input-container">
+          <input type="text" id="stock-input" placeholder="Enter stock symbol (e.g., BSE:SENSEX25JUL81200CE)">
+        </div>
+        <div class="input-container">
+          <input type="date" id="start-date" value="2025-07-01">
+        </div>
+        <div class="input-container">
+          <input type="date" id="end-date" value="2025-07-27">
+        </div>
+        <div class="input-container">
+          <select id="timeframe">
+            <option value="1">1 min</option>
+            <option value="60">1 hour</option>
+            <option value="1440">1 day</option>
+          </select>
+        </div>
+        <button class="btn" onclick="fetchStock()">
+          <i class="fas fa-chart-area"></i> Get Data
+        </button>
+        <button class="btn btn-secondary" onclick="downloadCSV()" id="download-btn" style="display:none;">
+          <i class="fas fa-download"></i> Download CSV
+        </button>
+      </div>
+      
+      <div class="metric-card" style="display: none;" id="stock-metrics">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+          <div>
+            <div class="metric-label">Current Price</div>
+            <div class="metric-value" id="current-price">--</div>
+          </div>
+          <div>
+            <div class="metric-label">24h Change</div>
+            <div class="metric-value" id="price-change">--</div>
+          </div>
+          <div>
+            <div class="metric-label">Volume</div>
+            <div class="metric-value" id="volume">--</div>
+          </div>
+          <div>
+            <div class="metric-label">Market Cap</div>
+            <div class="metric-value" id="market-cap">--</div>
+          </div>
+        </div>
+      </div>
+      
       <canvas id="stockChart" width="400" height="200"></canvas>
     </section>
-
-    </div>
   </div>
 
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
