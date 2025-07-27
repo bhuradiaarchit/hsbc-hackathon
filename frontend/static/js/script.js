@@ -6,7 +6,7 @@ function fetchCryptoData() {
     .then(res => res.json())
     .then(data => {
       const list = document.getElementById("crypto-list");
-      list.innerHTML = ""; // Clear old data
+      list.innerHTML = "";
 
       const li = document.createElement("li");
       li.textContent = `${cryptoTicker}: $${data.quote || "N/A"}`;
@@ -35,8 +35,7 @@ function updateBulkDealsTable() {
     .then(res => res.json())
     .then(data => {
       const tbody = document.getElementById("bulk-table-body");
-      tbody.innerHTML = "";  // clear existing rows
-
+      tbody.innerHTML = "";  
       data.top_bulk_deals.forEach(deal => {
         const tr = document.createElement("tr");
 
@@ -64,10 +63,7 @@ function updateBulkDealsTable() {
     });
 }
 
-// Call on page load and every 60 seconds to refresh
 updateBulkDealsTable();
-setInterval(updateBulkDealsTable, 6000000000);
-
 
 let stockChart;
 let stockDataForCSV = [];
@@ -98,9 +94,8 @@ function fetchStock() {
         return;
       }
 
-      stockDataForCSV = historical;  // Save for CSV download
+      stockDataForCSV = historical;  
 
-      // Convert timestamps (milliseconds) to readable dates
       const labels = historical.map(d => new Date(d.date).toLocaleString());
       const closes = historical.map(d => d.close);
 
@@ -136,7 +131,6 @@ function fetchStock() {
         }
       });
 
-      // Show download button
       document.getElementById("download-btn").style.display = "inline-block";
     })
     .catch(err => {
@@ -145,7 +139,6 @@ function fetchStock() {
     });
 }
 
-// Download CSV function
 function downloadCSV() {
   if (!stockDataForCSV.length) return;
 
