@@ -22,7 +22,7 @@ def top_5_bulk_deals():
             WHERE buy_sell = 'BUY'
             GROUP BY symbol
             ORDER BY total_buy_volume DESC
-            LIMIT 5;
+            LIMIT 10;
         """
         result = db.session.execute(query).fetchall()
 
